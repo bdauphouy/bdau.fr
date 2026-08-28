@@ -46,10 +46,5 @@ export type PageGlobals = {
 		twitter: string;
 		theme: string;
 	};
-	socials: {
-		github: string;
-		linkedin: string;
-		malt: string;
-		x: string;
-	};
+	socials: Record<string, string>;
 };
