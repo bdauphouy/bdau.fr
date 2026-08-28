@@ -9,9 +9,16 @@ import type {
 } from '$lib/server/sanity/types';
 import { getLastUpdate } from '$lib/utils/getLastUpdate';
 import { getLocation } from '$lib/utils/getLocation';
+import type { Config } from '@sveltejs/adapter-vercel';
 import type { LayoutServerLoad } from './$types';
 
-export const prerender = true;
+export const prerender = false;
+
+export const config: Config = {
+	isr: {
+		expiration: 60
+	}
+};
 
 export const load: LayoutServerLoad = async ({ params }) => {
 	const locale = assertIsLocale(params.locale);

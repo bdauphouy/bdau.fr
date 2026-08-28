@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-This is `bdau.fr`, Baptiste Dauphouy's personal portfolio site, built with SvelteKit (Svelte 4) and deployed on Vercel via `@sveltejs/adapter-vercel`. Page copy (projects, timeline, site settings) is authored in a companion Sanity Studio (`studio/`) and fetched at prerender time; UI chrome strings (labels, buttons) are translated via Paraglide.
+This is `bdau.fr`, Baptiste Dauphouy's personal portfolio site, built with SvelteKit (Svelte 4) and deployed on Vercel via `@sveltejs/adapter-vercel`. Page copy (projects, timeline, site settings) is authored in a companion Sanity Studio (`studio/`) and fetched via ISR (revalidated every 60s); UI chrome strings (labels, buttons) are translated via Paraglide.
 
 ## Commands
 
@@ -30,7 +30,7 @@ The site supports three locales (`en`, `fr`, `es`, see `src/lib/paraglide/runtim
 
 - `src/hooks.server.ts` runs `paraglideMiddleware` on every request, which resolves the locale (cookie/header-based) and rewrites `%lang%`/`%dir%` placeholders in `src/app.html`.
 - `src/routes/+layout.server.ts` handles requests with no `locale` param (i.e. `/`): 302-redirects to `/${getLocale()}`, Paraglide's resolved locale.
-- `src/routes/[locale=locale]/+layout.server.ts` calls `setLocale(locale)` for the request, then loads page content — see Content model below — plus `lastUpdate` (Vercel API) and `location` (GitHub API) in parallel. `export const prerender = true` here means content is fetched and baked in at build time, not per-request.
+- `src/routes/[locale=locale]/+layout.server.ts` calls `setLocale(locale)` for the request, then loads page content — see Content model below — plus `lastUpdate` (Vercel API) and `location` (GitHub API) in parallel. `export const prerender = false` plus `export const config = { isr: { expiration: 60 } }` here means the rendered page is cached by Vercel and regenerated (refetching Sanity) at most once every 60s, rather than only at build/deploy time.
 - `src/routes/[locale=locale]/+layout.svelte` renders the shared `Header`/`Footer` chrome around the page `slot`, and registers the GSAP `MotionPathPlugin`/`ScrollTrigger` plugins used by the main page.
 - UI strings (buttons, headings, meta fallbacks) come from `m.*` message functions in `src/lib/paraglide/messages/`, sourced from `messages/{en,fr,es}.json` — edit those source files, not the generated `paraglide/` output.
 - Two pages exist per locale: `/[locale]` (the main portfolio page) and `/[locale]/archives` (older/archived projects).
@@ -39,7 +39,7 @@ The site supports three locales (`en`, `fr`, `es`, see `src/lib/paraglide/runtim
 
 Page copy (projects, archived projects, timeline entries, site-wide settings like email/socials/theme/availability) lives in Sanity, project `bdau.fr` (id `jt60vu88`, dataset `production`), authored via the Studio in `studio/` (deployed at `bdau-fr.sanity.studio`). Localized fields use a `localeString`/`localeText` object shape (`{ en, fr, es }`) rather than per-locale documents — see `studio/schemaTypes/`.
 
-- `src/lib/server/sanity/client.ts` — the `@sanity/client` instance, configured from the private `SANITY_PROJECT_ID`/`SANITY_DATASET` env vars (see `.env.example`), `useCdn: false` since fetches only happen at build time and should see fresh content on every deploy.
+- `src/lib/server/sanity/client.ts` — the `@sanity/client` instance, configured from the private `SANITY_PROJECT_ID`/`SANITY_DATASET` env vars (see `.env.example`), `useCdn: false` since fetches happen on each ISR regeneration and should see fresh content, not a possibly-stale CDN copy.
 - `src/lib/server/sanity/queries.ts` — the GROQ queries (`projectsQuery`, `timelineItemsQuery`, `siteSettingsQuery`), each returning all three locales per field.
 - `src/lib/server/sanity/transform.ts` — picks the right locale out of the raw Sanity response and maps it into the existing `PageContent`/`PageGlobals` shapes from `src/lib/types.d.ts`, so downstream components are unaware content comes from Sanity.
 - `src/routes/[locale=locale]/+layout.server.ts` is the only caller of the Sanity client — it fetches and transforms, then passes `data.content` down.
@@ -58,12 +58,12 @@ When adding a new content field: add it to the relevant `studio/schemaTypes/` sc
 
 The main portfolio page (`src/routes/[locale=locale]/+page.svelte`) wires up Lenis (smooth scrolling) and GSAP with `ScrollTrigger`/`MotionPathPlugin` on mount, and tears down `ScrollTrigger` instances `onDestroy`. GSAP plugins are registered once in `src/routes/[locale=locale]/+layout.svelte`. Any new scroll-driven animation should register with this same Lenis/GSAP ticker rather than starting an independent RAF loop.
 
-### External data fetches (server-side, at prerender time)
+### External data fetches (server-side, on ISR regeneration)
 
 - `src/lib/utils/getLastUpdate.ts` — queries the Vercel deployments API for the last production deploy time. Requires `VERCEL_API_TOKEN` and `VERCEL_PROJET_ID` env vars (see `.env.example`); silently returns `new Date(0)` if unset.
 - `src/lib/utils/getLocation.ts` — queries the GitHub public API (`api.github.com/users/bdauphouy`) for current location text shown on the landing section.
 
-Both run inside `[locale=locale]/+layout.server.ts` at prerender time, alongside the Sanity content fetch, since `prerender = true` for that layout.
+Both run inside `[locale=locale]/+layout.server.ts` alongside the Sanity content fetch, on every ISR regeneration (at most once per 60s per route, per the `isr.expiration` config on that layout) rather than only at build/deploy time.
 
 ### Styling
 
