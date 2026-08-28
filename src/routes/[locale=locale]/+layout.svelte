@@ -11,10 +11,10 @@
 	export let data: PageData;
 </script>
 
-<Header languages={data.languages} lang={data.lang} />
+<Header />
 
 <main class="relative p-6 md:px-12 md:py-10">
 	<slot />
 </main>
 
-<Footer content={{ ...data.content.footer, ...{ lastUpdate: data.lastUpdate, lang: data.lang } }} />
+<Footer lastUpdate={data.lastUpdate} />

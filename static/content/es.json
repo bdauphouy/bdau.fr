@@ -1,32 +1,4 @@
 {
-	"meta": {
-		"portfolio": {
-			"title": "Baptiste Dauphouy • Portfolio",
-			"description": "Hola, soy Baptiste Dauphouy, desarrollador full-stack.",
-			"keywords": "baptiste dauphouy, portfolio"
-		},
-		"archives": {
-			"title": "Baptiste Dauphouy • Archivos",
-			"description": "Descubre los archivos de mis antiguos proyectos.",
-			"keywords": "baptiste dauphouy, archivos"
-		}
-	},
-	"landing": {
-		"title": "Hago que su marca\nbrille en la web,\nde forma sostenible.",
-		"badges": [
-			{
-				"handle": "available",
-				"title": "Disponible"
-			},
-			{
-				"handle": "unavailable",
-				"title": "No disponible"
-			}
-		],
-		"resume": {
-			"title": "Descargar mi CV"
-		}
-	},
 	"projects": [
 		{
 			"id": "dotworld",
@@ -72,12 +44,6 @@
 		}
 	],
 	"timeline": {
-		"technologiesTitle": "Tecnologías utilizadas",
-		"membersTitle": "Miembros del proyecto",
-		"linkTitle": "Ver el proyecto",
-		"learnMoreTitle": "Saber más",
-		"closeTitle": "Cerrar",
-		"scrollToExploreTitle": "Desplázate para explorar",
 		"items": [
 			{
 				"date": "09/01/2018",
@@ -219,15 +185,6 @@
 				"text": "¡Año nuevo, retos nuevos! Me mudo a Honduras y decido empezar a construir mi propio producto. Me apasiona la DeFi y quiero crear algo útil para la comunidad."
 			}
 		]
-	},
-	"contact": {
-		"title": "Contacto",
-		"subtitle": "¿Te ha gustado mi presentación y quieres trabajar conmigo? Contáctame por correo electrónico o a través de mis redes sociales."
-	},
-	"footer": {
-		"text": "Hecho con Svelte y amor por Baptiste Dauphouy.",
-		"lastUpdateTitle": "Actualizado el",
-		"archivesTitle": "Archivos"
 	},
 	"archives": [
 		{

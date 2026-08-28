@@ -1,17 +1,11 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-
-	export let languages: string[];
-	export let lang: string;
+	import { getLocale, locales, setLocale } from '$lib/paraglide/runtime';
+	import type { Locale } from '$lib/paraglide/runtime';
 
 	const handleLangChange = (event: Event) => {
 		const select = event.target as HTMLSelectElement;
-		const selectedOption = select.options[select.selectedIndex].value;
 
-		localStorage.setItem('lang', selectedOption);
-
-		goto(`/${selectedOption}/${$page.url.pathname.split('/').slice(2).join('/')}`);
+		setLocale(select.value as Locale);
 	};
 </script>
 
@@ -33,8 +27,8 @@
 		on:change={handleLangChange}
 		class="cursor-pointer rounded-full bg-transparent text-lg font-medium transition-colors duration-300 hover:text-secondary/60 focus-visible:text-secondary/60"
 	>
-		{#each languages as option}
-			<option value={option} selected={lang === option}>{option}</option>
+		{#each locales as locale}
+			<option value={locale} selected={getLocale() === locale}>{locale}</option>
 		{/each}
 	</select>
 </header>

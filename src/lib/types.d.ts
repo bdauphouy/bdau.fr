@@ -1,5 +1,3 @@
-export type Lang = 'en' | 'fr' | 'es';
-
 export type Badge = {
 	handle: string;
 	title: string;
@@ -32,42 +30,10 @@ export type Project = {
 	links?: Link[];
 };
 
-export type MetaTags = {
-	title: string;
-	description: string;
-	keywords: string;
-};
-
 export type PageContent = {
-	meta: {
-		portfolio: MetaTags;
-		archives: MetaTags;
-	};
-	landing: {
-		title: string;
-		badges?: Badge[];
-		resume: {
-			title: string;
-		};
-	};
 	projects: Project[];
 	timeline: {
-		technologiesTitle: string;
-		membersTitle: string;
-		linkTitle: string;
-		learnMoreTitle: string;
-		closeTitle: string;
-		scrollToExploreTitle: string;
 		items: TimelineItem[];
-	};
-	contact: {
-		title: string;
-		subtitle: string;
-	};
-	footer: {
-		text: string;
-		lastUpdateTitle: string;
-		archivesTitle: string;
 	};
 	archives: Project[];
 };
