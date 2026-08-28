@@ -37,11 +37,7 @@
 	globals={data.content.globals}
 />
 
-<Landing
-	globals={data.content.globals}
-	location={data.location}
-	highlightedProjects={data.content.projects}
-/>
+<Landing globals={data.content.globals} location={data.location} />
 
 <Projects content={data.content.projects} />
 
