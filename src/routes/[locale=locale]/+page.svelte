@@ -4,6 +4,7 @@
 	import Landing from '$lib/components/sections/landing.svelte';
 	import Projects from '$lib/components/sections/projects.svelte';
 	import Timeline from '$lib/components/sections/timeline.svelte';
+	import { m } from '$lib/paraglide/messages';
 	import { gsap } from 'gsap';
 	import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 	import Lenis from 'lenis';
@@ -30,22 +31,16 @@
 </script>
 
 <Meta
-	content={{
-		...data.content.meta.portfolio,
-		...{ globals: data.content.globals, lang: data.lang }
-	}}
+	title={m.meta_portfolio_title()}
+	description={m.meta_portfolio_description()}
+	keywords={m.meta_portfolio_keywords()}
+	globals={data.content.globals}
 />
 
-<Landing
-	content={{
-		...data.content.landing,
-		...{ globals: data.content.globals, lang: data.lang },
-		location: data.location
-	}}
-/>
+<Landing globals={data.content.globals} location={data.location} />
 
 <Projects content={data.content.projects} />
 
-<Timeline content={{ ...{ globals: data.content.globals }, ...data.content.timeline }} />
+<Timeline items={data.content.timeline.items} />
 
-<Contact content={{ ...data.content.contact, ...{ globals: data.content.globals } }} />
+<Contact globals={data.content.globals} />

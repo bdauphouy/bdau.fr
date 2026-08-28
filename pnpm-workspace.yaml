@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: false
+  svelte-preprocess: false
+minimumReleaseAgeExclude:
+  - '@inlang/paraglide-js@2.25.0'

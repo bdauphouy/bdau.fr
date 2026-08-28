@@ -3,17 +3,18 @@
 	import Button from '$lib/components/button.svelte';
 	import TimelineDrawer from '$lib/components/timeline/timeline-drawer.svelte';
 	import TimelinePath from '$lib/components/timeline/timeline-path.svelte';
-	import type { PageContent, PageGlobals } from '$lib/types';
+	import { m } from '$lib/paraglide/messages';
+	import type { TimelineItem } from '$lib/types';
 	import { fade } from 'svelte/transition';
 
-	export let content: PageContent['timeline'] & { globals: PageGlobals };
+	export let items: TimelineItem[];
 
 	let currentTimelineItemIndex = 0;
 	let isTimelineItemContentExpanded = false;
 
 	const timelineContentMaxLength = 100;
 
-	$: orderedTimelineItems = content.items.sort(
+	$: orderedTimelineItems = items.sort(
 		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 	);
 
@@ -45,9 +46,9 @@
 	{#if isTimelineItemContentExpanded}
 		<TimelineDrawer
 			{currentTimelineItem}
-			membersTitle={content.membersTitle}
-			technologiesTitle={content.technologiesTitle}
-			closeTitle={content.closeTitle}
+			membersTitle={m.timeline_members_title()}
+			technologiesTitle={m.timeline_technologies_title()}
+			closeTitle={m.timeline_close_title()}
 			on:close={handleContentExpand}
 		/>
 	{/if}
@@ -69,7 +70,7 @@
 				{#if currentTimelineItem.link}
 					<div class="hidden self-start md:flex">
 						<Button as="a" href={currentTimelineItem.link}>
-							{content.linkTitle}
+							{m.timeline_link_title()}
 						</Button>
 					</div>
 				{/if}
@@ -78,14 +79,14 @@
 						{#if currentTimelineItem.link}
 							<div class="flex self-start">
 								<Button as="a" href={currentTimelineItem.link}>
-									{content.linkTitle}
+									{m.timeline_link_title()}
 								</Button>
 							</div>
 						{/if}
 						{#if displayLearnMoreButton}
 							<div class="inline-flex md:hidden">
 								<Button on:click={handleContentExpand}>
-									{content.learnMoreTitle}
+									{m.timeline_learn_more_title()}
 								</Button>
 							</div>
 						{/if}
@@ -95,7 +96,7 @@
 					{#if currentTimelineItem.technologies && currentTimelineItem.technologies.length > 0}
 						<div class="flex flex-col gap-4">
 							<h3 class="text-md font-medium text-secondary/60">
-								{content.technologiesTitle}
+								{m.timeline_technologies_title()}
 							</h3>
 							<ul class="flex items-center gap-4">
 								{#each currentTimelineItem.technologies as technology}
@@ -109,7 +110,7 @@
 					{#if currentTimelineItem.members && currentTimelineItem.members.length > 0}
 						<div class="flex flex-col gap-4">
 							<h3 class="text-md font-medium text-secondary/60">
-								{content.membersTitle}
+								{m.timeline_members_title()}
 							</h3>
 							<ul class="flex flex-wrap items-center gap-4">
 								{#each currentTimelineItem.members as member}
@@ -126,6 +127,6 @@
 	</div>
 	<div class="mx-auto flex w-full flex-col items-center md:w-2/3 lg:w-full">
 		<TimelinePath items={orderedTimelineItems} on:intersect={handleTimelineItemIntersect} />
-		<Badge variant="secondary">{content.scrollToExploreTitle}</Badge>
+		<Badge variant="secondary">{m.timeline_scroll_to_explore_title()}</Badge>
 	</div>
 </section>

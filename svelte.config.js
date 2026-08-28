@@ -15,7 +15,7 @@ const config = {
 			fallback: 'en.html'
 		}),
 		prerender: {
-			entries: ['*', '/en', '/fr', '/es']
+			entries: ['*']
 		},
 		alias: {
 			$lib: './src/lib',
