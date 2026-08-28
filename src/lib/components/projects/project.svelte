@@ -23,14 +23,14 @@
 		<div
 			class="transition-all duration-300 group-focus-within:opacity-25 group-focus-within:blur-sm group-hover:opacity-25 group-hover:blur-sm"
 		>
-			{#if isArchive}
+			{#if isArchive || !project.thumbnail}
 				<div class="flex h-52 w-full items-center justify-center bg-primary">
 					<h3 class="text-2xl text-white">
 						{project.title}
 					</h3>
 				</div>
 			{:else}
-				<img src="/images/projects/{project.id}.png" alt={project.title} />
+				<img src={project.thumbnail} alt={project.title} />
 			{/if}
 		</div>
 	</div>

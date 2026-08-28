@@ -16,9 +16,10 @@ export type SanityProject = {
 	id: string;
 	title: LocaleString;
 	description: LocaleString;
+	thumbnail?: string;
 	badges?: SanityBadge[];
 	links?: SanityLink[];
-	category: 'current' | 'archive';
+	category: 'highlight' | 'archive';
 	order: number;
 };
 

@@ -11,6 +11,7 @@ function toProject(locale: Locale, project: SanityProject): Project {
 		id: project.id,
 		title: project.title[locale],
 		description: project.description[locale],
+		thumbnail: project.thumbnail,
 		badges: project.badges?.map((badge) => ({
 			handle: badge.handle,
 			title: badge.title[locale]
@@ -40,7 +41,7 @@ export function toPageContent(
 ): PageContent {
 	return {
 		projects: projects
-			.filter((project) => project.category === 'current')
+			.filter((project) => project.category === 'highlight')
 			.map((project) => toProject(locale, project)),
 		archives: projects
 			.filter((project) => project.category === 'archive')

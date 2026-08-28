@@ -2,6 +2,7 @@ export const projectsQuery = `*[_type == "project"] | order(order asc){
 	"id": id.current,
 	title,
 	description,
+	"thumbnail": thumbnail.asset->url,
 	badges[]{handle, title},
 	links[]{title, url},
 	category,

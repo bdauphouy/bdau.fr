@@ -26,6 +26,7 @@ export type Project = {
 	id: string;
 	title: string;
 	description: string;
+	thumbnail?: string;
 	badges?: Badge[];
 	links?: Link[];
 };

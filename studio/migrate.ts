@@ -54,7 +54,7 @@ function mmddyyyyToIso(date: string): string {
 }
 
 function projectDoc(
-  category: 'current' | 'archive',
+  category: 'highlight' | 'archive',
   key: 'projects' | 'archives',
   id: string,
   order: number,
@@ -123,7 +123,7 @@ async function migrate() {
   const client = getCliClient({apiVersion: '2026-08-28'})
 
   const docs: Array<Record<string, unknown> & {_id: string; _type: string}> = [
-    ...files.en.projects.map((p, i) => projectDoc('current', 'projects', p.id, i)),
+    ...files.en.projects.map((p, i) => projectDoc('highlight', 'projects', p.id, i)),
     ...files.en.archives.map((p, i) => projectDoc('archive', 'archives', p.id, i)),
     ...files.en.timeline.items.map((_, i) => timelineItemDoc(i)),
     siteSettingsDoc(),
