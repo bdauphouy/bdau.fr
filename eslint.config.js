@@ -28,6 +28,6 @@ export default [
 		}
 	},
 	{
-		ignores: ['build/', '.svelte-kit/', 'dist/', 'src/lib/paraglide/', 'project.inlang/']
+		ignores: ['build/', '.svelte-kit/', 'dist/', 'src/lib/paraglide/', 'project.inlang/', 'studio/']
 	}
 ];

@@ -6,3 +6,6 @@ yarn.lock
 # Paraglide (auto-generated)
 src/lib/paraglide/
 project.inlang/
+
+# Sanity Studio (own toolchain)
+studio/
