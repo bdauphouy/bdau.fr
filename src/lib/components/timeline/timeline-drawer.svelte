@@ -15,17 +15,33 @@
 		dispatch('close');
 	};
 
+	// Rendered at the end of <body> so it escapes the GSAP-pinned timeline section:
+	// a transform on any ancestor would make `position: fixed` relative to it.
+	const portal = (node: HTMLElement) => {
+		document.body.appendChild(node);
+	};
+
+	let previousHtmlOverflow = '';
+	let previousBodyOverflow = '';
+
 	onMount(() => {
+		previousHtmlOverflow = document.documentElement.style.overflow;
+		previousBodyOverflow = document.body.style.overflow;
+		document.documentElement.style.overflow = 'hidden';
 		document.body.style.overflow = 'hidden';
 	});
 
 	onDestroy(() => {
-		document.body.style.overflow = 'auto';
+		if (typeof document === 'undefined') return;
+		document.documentElement.style.overflow = previousHtmlOverflow;
+		document.body.style.overflow = previousBodyOverflow;
 	});
 </script>
 
 <div
-	class="fixed -left-6 bottom-0 z-10 flex h-screen w-screen flex-col gap-12 overflow-auto bg-primary p-6 md:py-12 lg:hidden"
+	use:portal
+	data-lenis-prevent
+	class="fixed inset-0 z-50 flex flex-col gap-12 overflow-y-auto overscroll-contain bg-primary p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))] md:px-12 md:py-12 lg:hidden"
 	in:slide={{ duration: 300 }}
 	out:slide={{ duration: 300 }}
 >
